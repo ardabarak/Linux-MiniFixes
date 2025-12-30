@@ -1,0 +1,28 @@
+###fixing the audio delay issue at fresh installations (mainly wireplumber default sets 1~5 seconds idle)
+
+###make a custom config:
+>>>mkdir -p ~/.config/wireplumber/wireplumber.conf.d
+>>>nano ~/.config/wireplumber/wireplumber.conf.d/disable-suspend.conf
+
+###add into the nano file
+>>>
+```
+monitor.alsa.rules = [
+  {
+    matches = [
+      {
+        node.name = "~alsa_output.*"
+      }
+    ]
+    actions = {
+      update-props = {
+        session.suspend-timeout-seconds = 0
+      }
+    }
+  }
+]
+```
+
+### Restart the audio devices:
+>>>systemctl --user restart wireplumber pipewire pipewire-pulse
+
